@@ -1,10 +1,21 @@
 <mat-toolbar color="secondary">
     <span>TableLand integrations</span>
+
+    <a mat-button (click)="onWalletConnect()"> Connect Wallet </a>
+
     <span class="example-spacer"></span>
 
-    <div>
-        <a mat-button [routerLink]="'table-land'" > Connect Wallet </a>
-    </div>
+
+    <span style="font-size: small;" *ngIf="this.options">
+        <mat-icon fontIcon="wallet"></mat-icon>
+        Wallet connected
+
+        <mat-icon fontIcon="link"></mat-icon>
+        {{this.options?.chain}}
+
+        <mat-icon fontIcon="description"></mat-icon>
+        {{this.options?.contract}}
+    </span>
 </mat-toolbar>
 
 <span>henlo</span>
