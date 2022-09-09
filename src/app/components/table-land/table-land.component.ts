@@ -17,6 +17,7 @@ export class TableLandComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
 
+    return;
     console.log('@tableland/sdk supports:', SUPPORTED_CHAINS);
 
     // connecting to Goerli Network
