@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { connect } from '@tableland/sdk';
+import { connect, Connection, SUPPORTED_CHAINS } from '@tableland/sdk';
 
 @Component({
   selector: 'app-table-land',
@@ -8,20 +8,40 @@ import { connect } from '@tableland/sdk';
 })
 export class TableLandComponent implements OnInit {
 
-  constructor() { }
+  // @ts-ignore
+  private tableland: Connection = null;
+
+  constructor() {
+
+  }
 
   public async ngOnInit(): Promise<void> {
-    //const tableland = await connect({ network: "testnet", chain: "polygon-mumbai", chainId: 5 });
-    const tableland = await connect({ network: "testnet", chainId: 5 });
-    console.log('tableLand', tableland);
 
-    const { name } = await tableland.create(`id int primary key, name text`, { prefix: 'quickstart' })
-    const writeRes = await tableland.write(`INSERT INTO ${name} VALUES (0, 'Bobby Tables')`);
+    console.log('@tableland/sdk supports:', SUPPORTED_CHAINS);
 
-    console.log('writeRes', writeRes);
+    // connecting to Goerli Network
+    this.tableland = await connect({ network: "testnet", chain: "ethereum-goerli" });
+    await this.tableland.siwe();
 
-    const readRes = await tableland.read(`SELECT * FROM ${name}`);
+    console.log('tableLandObject', this.tableland);
 
-    console.log('readRes', readRes);
+
+    var tables = await this.tableland.list();
+    console.log('tables', tables);
+  }
+
+  // my_sdk_table_5_684
+  public async onButtonClicked() {
+    const { name } = await this.tableland.create(`id int primary key, name text`, { prefix: 'my_sdk_table' })
+
+    console.log('table name', name);
+
+    const writeRes = await this.tableland.write(`INSERT INTO ${name} VALUES (0, 'Bobby Tables')`);
+    console.log('writing results', writeRes);
+
+    const readRes = await this.tableland.read(`SELECT * FROM ${name}`);
+
+    console.log('reading results', readRes);
   }
 }
+
