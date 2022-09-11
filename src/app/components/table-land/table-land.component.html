@@ -11,11 +11,33 @@
         Wallet connected
 
         <mat-icon fontIcon="link"></mat-icon>
-        {{this.options?.chain}}
+        {{this.options.chain}}
 
         <mat-icon fontIcon="description"></mat-icon>
-        {{this.options?.contract}}
+        {{this.options.contract}}
     </span>
 </mat-toolbar>
 
-<span>henlo</span>
+<mat-tab-group (selectedTabChange)="OnTabChange($event)">
+    <mat-tab label="View entities">
+        <mat-card>
+            <mat-list role="list" *ngFor="let table of listOfTables">
+                <mat-list-item (click)="queryTable(table.name)" role="listitem">{{table.name}}</mat-list-item>
+            </mat-list>
+        </mat-card>
+
+        <table *ngIf="tableIsReady" mat-table [dataSource]="tableContents">
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let element"> {{element}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </mat-tab>
+
+    <mat-tab label="Create Entities">
+
+    </mat-tab>
+</mat-tab-group>
