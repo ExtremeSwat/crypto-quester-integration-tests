@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { connect, Connection, SUPPORTED_CHAINS } from '@tableland/sdk';
+import { connect, Connection, SUPPORTED_CHAINS, TableMetadata } from '@tableland/sdk';
 import { TableLandOptions } from 'src/app/models/table-land-options.model';
 
 @Component({
@@ -12,27 +12,38 @@ export class TableLandComponent implements OnInit {
 
   private tableland!: Connection;
 
-  // muie TS
-  public options!: any;
+  public options!: TableLandOptions;
+  public listOfTables: TableMetadata[] = [];
+
+  public displayedColumns: string[] = [];
+  public tableContents: any[] = [];
+
+  public tableIsReady: boolean = false;
 
   constructor(private _snackBar: MatSnackBar) {
 
   }
 
-  public async ngOnInit(): Promise<void> {
-    // console.log('@tableland/sdk supports:', SUPPORTED_CHAINS);
-    // var tables = await this.tableland.list();
-    // console.log('tables', tables);
+  public ngOnInit(): void {
+    console.log('SUPPORTED_CHAINS', SUPPORTED_CHAINS);
   }
 
   public async onWalletConnect(): Promise<void> {
     // connecting to Goerli Network
-    this.tableland = await connect({ network: "testnet", chain: "ethereum-goerli" });
+    // this.tableland = await connect({ network: "testnet", chain: "ethereum-goerli" });
+    this.tableland = await connect({ network: "testnet", chain: 'custom', host: 'localhost',  });
+
     await this.tableland.siwe();
 
     this.options = new TableLandOptions(this.tableland.options?.chain, this.tableland.options.contract, this.tableland.options.network);
+    this._snackBar.open('Wallet connected', 'OK');
 
-    this._snackBar.open('Wallet connected');
+    // grabbing current tables
+    this.grabTables();
+  }
+
+  public async OnTabChange(event: any) {
+    console.log('event', event);
   }
 
   // my_sdk_table_5_684
@@ -47,6 +58,34 @@ export class TableLandComponent implements OnInit {
     const readRes = await this.tableland.read(`SELECT * FROM ${name}`);
 
     console.log('reading results', readRes);
+  }
+
+  public async queryTable(tableName: string) {
+    this.tableIsReady = false;
+
+    const result = await this.tableland.read(`SELECT * FROM ${tableName}`);
+    result.columns.forEach(c => this.displayedColumns.push(c.name));
+
+    result.rows.forEach((result: any[]) => {
+      result.forEach((r, i) => {
+        const fieldName = this.displayedColumns[i];
+        // @ts-ignore
+        this.tableContents.push({
+            fieldName: fieldName,
+            value: r
+          }
+        )
+      });
+    });
+
+    console.log('table contents', this.tableContents);
+
+    this.tableIsReady = true;
+  }
+
+  private async grabTables(): Promise<void> {
+    this.listOfTables = await this.tableland.list();
+    console.log('current tables', this.listOfTables);
   }
 }
 
