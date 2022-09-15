@@ -12,4 +12,4 @@ tableland create "id INTEGER NOT NULL primary key,hint TEXT,latitude real NOT NU
 tableland create "id integer primary key not null, participant_address text not null, join_timestamp integer not null, challengeId integer not null" "participants"
 
 // participant progress
-tableland create "id integer primary key not null, challenge_participant_id integer not null, challenge_location_id integer not null, challenge_visit_timestamp integer not null"
+tableland create "id integer primary key not null, challenge_participant_id integer not null, challenge_location_id integer not null, challenge_visit_timestamp integer not null" "participant_progress"
