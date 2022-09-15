@@ -1,5 +1,4 @@
 tableland write "insert into mapSkins_80001_1799(SkinName,IPFSHash) values('TestSkin', '0x7435ac163ae86269ab22C273cACF8E4fa8A8854c')"
 tableland write "insert into challenges_80001_1800(Title, Description,fromTimestamp,toTimeStamp,owner, creationTimestamp, mapSkinId) values ('IOR Challenge', 'A seek challenge in park', 1663070400, 1664366400, '0x7435ac163ae86269ab22C273cACF8E4fa8A8854c', 1663089847,1)"
-
 tableland write "insert into challenge_locations_80001_1801(hint, latitude, longitude, creationTimestamp, challengeId) values('may be related to arts... may be related to an island ?', 44.420782, 26.154984, 1663090118, 1), ('a beautiful fountain..almost like a rose..', 44.425096, 26.151826, 1663090294, 1), ('some ice-skating would be nice', 44.425231, 26.158118, 1663090295, 1), ('dogs have their very own island? :O', 44.419986, 26.157053, 1663090299, 1)"
 
