@@ -1,6 +1,9 @@
 // CLI create table
 // MapSkins
-tableland create "(id integer primary key not null, skinName text not null, ipfsHash text not null, unique(ipfsHash), unique(skinName))" "mapSkins"
+//tableland create "(id integer primary key not null, skinName text not null, ipfsHash text not null, unique(ipfsHash), unique(skinName))" "mapSkins"
+
+// 17 - 09 - 22 changes
+tableland create "(id integer primary key not null, skinName text not null, imagePreviewUrl text not null, mapUri text not null, unique(mapUri), unique(skinName))"
 
 // Challenges
 tableland create "id INTEGER primary key NOT NULL,title text not null unique,description TEXT NOT NULL,fromTimestamp INTEGER NOT NULL,toTimestamp integer NOT NULL,triggerTimestamp integer,owner TEXT NOT NULL,creationTimestamp integer NOT NULL,mapSkinId integer" "challenges"
