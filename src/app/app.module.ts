@@ -16,11 +16,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
+import { WalletConnectComponent } from './components/wallet-connect/wallet-connect.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableLandComponent,
+    WalletConnectComponent,
   ],
   imports: [
     BrowserModule,

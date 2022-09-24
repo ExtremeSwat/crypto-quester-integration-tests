@@ -30,7 +30,7 @@ export class TableLandComponent implements OnInit {
 
   public async onWalletConnect(): Promise<void> {
     // connecting to Goerli Network
-    this.tableland = await connect({ network: "testnet", chain: "ethereum-goerli" });
+    this.tableland = await connect({ network: "testnet", chain: "polygon-mumbai" });
     await this.tableland.siwe();
 
     this.options = new TableLandOptions(this.tableland.options?.chain, this.tableland.options.contract, this.tableland.options.network);
