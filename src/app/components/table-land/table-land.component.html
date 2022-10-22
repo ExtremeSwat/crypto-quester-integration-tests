@@ -3,6 +3,8 @@
 
     <a mat-button (click)="onWalletConnect()"> Connect Wallet </a>
 
+    <a mat-button (click)="onButtonClicked()"> Create Dummy </a>
+
     <span class="example-spacer"></span>
 
 
@@ -26,10 +28,11 @@
             </mat-list>
         </mat-card>
 
-        <table *ngIf="tableIsReady" mat-table [dataSource]="tableContents">
-            <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef> No. </th>
-                <td mat-cell *matCellDef="let element"> {{element}} </td>
+        <table *ngIf="tableIsReady" mat-table [dataSource]="tableRows">
+
+            <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns">
+                <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+                <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

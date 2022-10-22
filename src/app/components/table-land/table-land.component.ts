@@ -17,7 +17,7 @@ export class TableLandComponent implements OnInit {
   public listOfTables: TableMetadata[] = [];
 
   public displayedColumns: string[] = [];
-  public tableContents: any[] = [];
+  public tableRows: any[] = [];
 
   public tableIsReady: boolean = false;
   
@@ -34,7 +34,7 @@ export class TableLandComponent implements OnInit {
     this.tableland = await connect({ host: "http://localhost:8080", chain: "local-tableland" });
 
     // wasn't this required ?
-    //await this.tableland.siwe();
+    // await this.tableland.siwe();
 
     this.options = new TableLandOptions(this.tableland.options?.chain, this.tableland.options.contract, this.tableland.options.network);
     this._snackBar.open('Wallet connected', 'OK');
@@ -71,18 +71,21 @@ export class TableLandComponent implements OnInit {
     result.columns.forEach(c => this.displayedColumns.push(c.name));
 
     result.rows.forEach((result: any[]) => {
+      let object = {};
+
       result.forEach((r, i) => {
         const fieldName = this.displayedColumns[i];
+
         // @ts-ignore
-        this.tableContents.push({
-            fieldName: fieldName,
-            value: r
-          }
-        )
+        object[fieldName] = r;
+        
+        this.tableRows.push(object);
       });
     });
 
-    console.log('table contents', this.tableContents);
+
+    console.log('displayedColumns', this.displayedColumns);
+    console.log('table contents', this.tableRows);
 
     this.tableIsReady = true;
   }
