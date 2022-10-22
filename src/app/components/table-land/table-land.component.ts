@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { connect, Connection, SUPPORTED_CHAINS, TableMetadata } from '@tableland/sdk';
+import { connect, Connection, ConnectOptions, SUPPORTED_CHAINS, TableMetadata } from '@tableland/sdk';
 import { TableLandOptions } from 'src/app/models/table-land-options.model';
 
 @Component({
@@ -11,6 +11,7 @@ import { TableLandOptions } from 'src/app/models/table-land-options.model';
 export class TableLandComponent implements OnInit {
 
   private tableland!: Connection;
+  public connected: boolean = false;
 
   public options!: TableLandOptions;
   public listOfTables: TableMetadata[] = [];
@@ -19,6 +20,7 @@ export class TableLandComponent implements OnInit {
   public tableContents: any[] = [];
 
   public tableIsReady: boolean = false;
+  
 
   constructor(private _snackBar: MatSnackBar) {
 
@@ -29,17 +31,18 @@ export class TableLandComponent implements OnInit {
   }
 
   public async onWalletConnect(): Promise<void> {
-    // connecting to Goerli Network
-    // this.tableland = await connect({ network: "testnet", chain: "polygon-mumbai" });
-    this.tableland = await connect({ host: "http://127.0.0.1:8545", chain: "local-tableland" });
+    this.tableland = await connect({ host: "http://localhost:8080", chain: "local-tableland" });
 
-    await this.tableland.siwe();
+    // wasn't this required ?
+    //await this.tableland.siwe();
 
     this.options = new TableLandOptions(this.tableland.options?.chain, this.tableland.options.contract, this.tableland.options.network);
     this._snackBar.open('Wallet connected', 'OK');
 
     // grabbing current tables
     this.grabTables();
+
+    this.connected = true;
   }
 
   public async OnTabChange(event: any) {
@@ -64,6 +67,7 @@ export class TableLandComponent implements OnInit {
     this.tableIsReady = false;
 
     const result = await this.tableland.read(`SELECT * FROM ${tableName}`);
+
     result.columns.forEach(c => this.displayedColumns.push(c.name));
 
     result.rows.forEach((result: any[]) => {
